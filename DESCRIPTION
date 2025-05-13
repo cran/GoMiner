@@ -1,6 +1,6 @@
 Package: GoMiner
-Version: 1.0
-Date: 2025-03-16
+Version: 1.1
+Date: 2025-05-13
 Title: Automate the Mapping Between a List of Genes and Gene Ontology
         Categories
 Authors@R: c(
@@ -9,7 +9,8 @@ Authors@R: c(
 Maintainer: Barry Zeeberg <barryz2013@gmail.com>
 Author: Barry Zeeberg [aut, cre]
 Depends: R (>= 4.2.0)
-Imports: minimalistGODB, HGNChelper, stats, gplots, grDevices, utils
+Imports: minimalistGODB, HGNChelper, randomGODB, stats, gplots,
+        grDevices, utils, vprint
 LazyData: true
 LazyDataCompression: xz
 Description: In gene-expression microarray studies, for example, one generally obtains a list of
@@ -28,6 +29,6 @@ Suggests: knitr, rmarkdown, testthat (>= 3.0.0)
 RoxygenNote: 7.3.2
 Config/testthat/edition: 3
 NeedsCompilation: no
-Packaged: 2025-03-24 16:04:19 UTC; barryzeeberg
+Packaged: 2025-05-13 22:50:15 UTC; barryzeeberg
 Repository: CRAN
-Date/Publication: 2025-03-25 09:20:02 UTC
+Date/Publication: 2025-05-13 23:20:02 UTC

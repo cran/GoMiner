@@ -4,7 +4,7 @@
 \alias{GOthresh}
 \title{GOthresh}
 \usage{
-GOthresh(m, sampleFDR, enrichThresh, countThresh, fdrThresh)
+GOthresh(m, sampleFDR, enrichThresh, countThresh, pvalThresh, fdrThresh)
 }
 \arguments{
 \item{m}{return value of GOenrich3()}
@@ -15,6 +15,8 @@ GOthresh(m, sampleFDR, enrichThresh, countThresh, fdrThresh)
 
 \item{countThresh}{numerical acceptance threshold for gene count}
 
+\item{pvalThresh}{numerical acceptance threshold for pval}
+
 \item{fdrThresh}{numerical acceptance threshold for fdr}
 }
 \value{
@@ -24,8 +26,6 @@ returns a subset of matrix (m joined with fdr$sampleFDR) with entries meeting al
 retrieve lines of m that meet both enrichThresh and countThresh
 }
 \examples{
-#load("data/x_m.RData")
-#load("data/x_fdr.RData")
-thresh<-GOthresh(x_m,x_fdr$sampleFDR,enrichThresh=2,countThresh=2,fdrThresh=0.100)
+thresh<-GOthresh(x_m,x_fdr$sampleFDR,enrichThresh=2,countThresh=2,pvalThresh=0.1,fdrThresh=0.100)
 
 }

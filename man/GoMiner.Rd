@@ -9,11 +9,16 @@ GoMiner(
   dir,
   sampleList,
   GOGOA3,
-  ONT,
+  ontology,
   enrichThresh = 2,
   countThresh = 5,
+  pvalThresh = 0.1,
   fdrThresh = 0.1,
-  nrand = 100
+  nrand = 100,
+  mn = 2,
+  mx = 200,
+  opt,
+  verbose = 1
 )
 }
 \arguments{
@@ -25,15 +30,25 @@ GoMiner(
 
 \item{GOGOA3}{return value of subsetGOGOA()}
 
-\item{ONT}{character string c("molecular_function", "cellular_component", "biological_process")}
+\item{ontology}{character string c("molecular_function", "cellular_component", "biological_process")}
 
 \item{enrichThresh}{numerical acceptance threshold for enrichment}
 
 \item{countThresh}{numerical acceptance threshold for gene count}
 
+\item{pvalThresh}{numerical acceptance threshold for pval}
+
 \item{fdrThresh}{numerical acceptance threshold for fdr}
 
 \item{nrand}{numeric number of randomizations to compute FDR}
+
+\item{mn}{integer param passed to trimGOGOA3, min size threshold for a category}
+
+\item{mx}{integer param passed to trimGOGOA3, max size threshold for a category}
+
+\item{opt}{integer 0:1 parameter used to select randomization method}
+
+\item{verbose}{integer vector representing classes}
 }
 \value{
 returns a matrix suitable to generate a heatmap
@@ -41,16 +56,48 @@ returns a matrix suitable to generate a heatmap
 \description{
 driver to generate heatmap
 }
+\details{
+modes of FDR estimation:
+opt=0 use original database with randomized geneLists
+opt=1 use original geneList with internally scrambled genes databases
+(uses randomGODB())
+
+databases that can be used with the real geneList:
+these are explicitly passed as parameter to GoMiner()
+(1) original GOGOA3
+(2) randomized version of GOGOSA GOGOA3R<-randomGODB(GOGOA3)
+(3) database containing a subset of the big hitters genes (randomGODB2driver())
+attempts to compensate for the over-annotation of some genes,
+that might lead to false positive
+if gene G has a lot of mappings to categories, randomly sample G/category
+pairs to retain a reasonable number of them.
+e.g., reduce G from 100 category mappings to 7 category mappings, by omitting
+93 of the mappings G/category mappings
+}
 \examples{
 \dontrun{
 # GOGOA3.RData is too large to include in the R package
+# so I need to load it from a file that is not in the package.
+# Since this is in a file in my own file system, I could not
+# include this as a regular example in the package.
 # you can generate it using the package 'minimalistGODB'
-# or you can retrieve it from https://github.com/barryzee/GO
-load("~/GODB_RDATA/GOGOA3.RData")
-load("data/cluster52.RData")
+# or you can retrieve it from https://github.com/barryzee/GO/tree/main/databases
+load("/Users/barryzeeberg/personal/GODB_RDATA/goa_human/GOGOA3_goa_human.RData")
 l<-GoMiner("Cluster52",tempdir(),cluster52,
- GOGOA3,ONT="biological_process",enrichThresh=2,
- countThresh=5,fdrThresh=0.10,nrand=10)
+ GOGOA3=GOGOA3,ontology="biological_process",enrichThresh=2,
+ countThresh=5,pvalThresh=0.10,fdrThresh=0.10,nrand=2,mn=2,mx=200,opt=0,verbose=1)
+ 
+ # try out yeast database!
+ load("/Users/barryzeeberg/personal/GODB_RDATA/sgd/GOGOA3_sgd.RData")
+ # make sure this is in fact the database for the desired species
+ GOGOA3$species
+ # use database to find genes mapping to an interesting category
+ cat<-"GO_0042149__cellular_response_to_glucose_starvation"
+ w<-which(GOGOA3$ontologies[["biological_process"]][,"GO_NAME"]==cat)
+ geneList<-GOGOA3$ontologies[["biological_process"]][w,"HGNC"]
+ l<-GoMiner("YEAST",tempdir(),geneList,
+  GOGOA3,ontology="biological_process",enrichThresh=2,
+  countThresh=3,pvalThresh=0.10,fdrThresh=0.10,nrand=2,mn=2,mx=200,opt=0)
 }
 
 }

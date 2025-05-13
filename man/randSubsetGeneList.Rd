@@ -18,7 +18,15 @@ returns a character vector of genes
 retrieve n unique random genes
 }
 \examples{
-#load("data/GOGOA3small.RData")
-genes<-randSubsetGeneList(GOGOA3small$genes[["biological_process"]],20)
+\dontrun{
+# GOGOA3.RData is too large to include in the R package
+# so I need to load it from a file that is not in the package.
+# Since this is in a file in my own file system, I could not
+# include this as a regular example in the package.
+# you can generate it using the package 'minimalistGODB'
+# or you can retrieve it from https://github.com/barryzee/GO/tree/main/databases
+load("/Users/barryzeeberg/personal/GODB_RDATA/goa_human/GOGOA3_goa_human.RData")
+genes<-randSubsetGeneList(GOGOA3$genes[["biological_process"]],20)
+}
  
 }

@@ -4,16 +4,24 @@
 \alias{RCPD}
 \title{RCPD}
 \usage{
-RCPD(GOGOA3, ngenes, nrand, ONT)
+RCPD(GOGOA3, tablePop, geneList, nrand, ontology, hyper, subd, opt)
 }
 \arguments{
 \item{GOGOA3}{return value of subsetGOGOA()}
 
-\item{ngenes}{integer number of genes to randomize}
+\item{tablePop}{return value of GOtable3()}
+
+\item{geneList}{character vector lisgt of genes to randomize}
 
 \item{nrand}{integer number of randomizations}
 
-\item{ONT}{c("molecular_function","cellular_component","biological_process")}
+\item{ontology}{c("molecular_function","cellular_component","biological_process")}
+
+\item{hyper}{return value of GOhypergeometric3() from real (nonrandom) data}
+
+\item{subd}{character string pathname for directory containing sink.txt}
+
+\item{opt}{integer 0:1 parameter used to select randomization method}
 }
 \value{
 returns a histogram of log10(p)
@@ -26,7 +34,15 @@ the cpd of the randomizations is to be used for estimating
 the false discovery rate (FDR) of the real sampled genes
 }
 \examples{
-#load("data/GOGOA3small.RData")
-rcpd<-RCPD(GOGOA3small,ngenes=100,nrand=10,ONT="biological_process")
+\dontrun{
+# GOGOA3.RData is too large to include in the R package
+# so I need to load it from a file that is not in the package.
+# Since this is in a file in my own file system, I could not
+# include this as a regular example in the package.
+# you can generate it using the package 'minimalistGODB'
+# or you can retrieve it from https://github.com/barryzee/GO/tree/main/databases
+load("/Users/barryzeeberg/personal/GODB_RDATA/goa_human/GOGOA3_goa_human.RData")
+rcpd<-RCPD(GOGOA3,x_tablePop31,10,3,"biological_process",x_hyper1,tempdir(),0)
+}
 
 }

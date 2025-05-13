@@ -55,7 +55,7 @@ As my attempt to provide the range of GoMiner resources, I have developed four C
 
 
 <p class=MsoNormal align=center style='text-align:center'><b style='mso-bidi-font-weight:
-normal'><span style='font-size:16.0pt;font-family:"Times New Roman",serif'>Results<o:p></o:p></span></b></p>
+normal'><span style='font-size:16.0pt;font-family:"Times New Roman",serif'>Human Results<o:p></o:p></span></b></p>
 
 The list of genes that we will use here for proof of concept, referred to as 'cluster52' was derived from a published analysis of a large set of cancer cell lines (Zeeberg, B.R., Kohn, K.W., Kahn, A., Larionov, V., Weinstein, J.N., Reinhold, W., Pommier, Y. (2012) <doi/10.1371/journal.pone.0040062 >) and was subsequently the subject of intensive research (Kohn, K.W., Zeeberg, B.R, Reinhold, W.C., Sunshine, M., Luna, A., Pommier, Y. (2012) <doi/10.1371/journal.pone.0035716>) because they were associated with categories like cell adhesion, which are key to understanding metastasis. The gene list is available in data/cluster52.RData . The GO database *GOGOA3* can be obtained from my package 'minimalistGODB' or downloaded from https://github.com/barryzee/GO.
 
@@ -82,4 +82,35 @@ The visualization is saved using the Scalable Vector Graphics (SVG) technology, 
 
 Figure 2. Heatmap for cluster52 genes
 
-<br><br>
+<br>
+
+<p class=MsoNormal align=center style='text-align:center'><b style='mso-bidi-font-weight:
+normal'><span style='font-size:16.0pt;font-family:"Times New Roman",serif'>Yeast Results<o:p></o:p></span></b></p>
+
+To demonstrate that we are not limited to human, let's do a quick demo for yeast. This will also demonstrate that
+GoMiner can be used for educational purposes in addition to research. One of the most interesting
+properties of yeast is to ferment grapes. Let us pick the genes mapping to "GO_0042149__cellular_response_to_glucose_starvation". Of course, we expect to find these genes mapping to
+"GO_0042149__cellular_response_to_glucose_starvation", but the real interest is to see what other biological
+processes are also linked to this same set of genes (Figure 3). That is, we are using these genes as bait to fish out
+additional relevant categories. We might draw the inference that some of these additional categories reflect
+the broader systemic response to the organism's adaptation to glucose starvation.
+
+```
+# try out the yeast database!
+load("/Users/barryzeeberg/GODB_RDATA/sgd/GOGOA3_sgd.RData")
+# make sure this is in fact the database for the desired species
+GOGOA3$species
+
+# use the database to find genes mapping to an interesting category
+cat<-"GO_0042149__cellular_response_to_glucose_starvation"
+w<-which(GOGOA3$ontologies[["biological_process"]][,"GO_NAME"]==cat)
+geneList<-GOGOA3$ontologies[["biological_process"]][w,"HGNC"]
+
+l<-GoMiner("YEAST",tempdir(),geneList,
+GOGOA3,ONT="biological_process",enrichThresh=2,
+countThresh=3,fdrThresh=0.10,nrand=100)
+```
+<br>
+![Figure 3. Heatmap for yeast genes and categories associated with glucose starvation](yeastHeatmap.jpg){width=175%}
+
+Figure 3. Heatmap for yeast genes and categories associated with glucose starvation

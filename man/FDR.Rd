@@ -4,16 +4,24 @@
 \alias{FDR}
 \title{FDR}
 \usage{
-FDR(sampleList, GOGOA3, nrand, ONT)
+FDR(sampleList, tablePop3, hyper, GOGOA3, nrand, ontology, subd, opt = 0)
 }
 \arguments{
 \item{sampleList}{character vector of user-supplied genes of interest}
+
+\item{tablePop3}{return value of GOtable3()}
+
+\item{hyper}{return value of GOhypergeometric3()}
 
 \item{GOGOA3}{return value of subsetGOGOA()}
 
 \item{nrand}{integer number of randomizations}
 
-\item{ONT}{c("molecular_function","cellular_component","biological_process")}
+\item{ontology}{c("molecular_function","cellular_component","biological_process")}
+
+\item{subd}{character string pathname for directory containing sink.txt}
+
+\item{opt}{integer 0:1 parameter used to determine randomization method}
 }
 \value{
 returns a list with FDR information
@@ -23,8 +31,15 @@ compute the false discovery rate (FDR) of the hypergeometric
 p values of genes mapping to gene ontology (GO) categories
 }
 \examples{
-#load("data/GOGOA3small.RData")
-sampleList<-randSubsetGeneList(GOGOA3small$genes[["biological_process"]],10)
-fdr<-FDR(sampleList,GOGOA3small,nrand=100,"biological_process")
+\dontrun{
+# GOGOA3.RData is too large to include in the R package
+# so I need to load it from a file that is not in the package.
+# Since this is in a file in my own file system, I could not
+# include this as a regular example in the package.
+# you can generate it using the package 'minimalistGODB'
+# or you can retrieve it from https://github.com/barryzee/GO/tree/main/databases
+load("/Users/barryzeeberg/personal/GODB_RDATA/goa_human/GOGOA3_goa_human.RData")
+fdr<-FDR(x_sampleList1,x_tablePop31,x_hyper1,GOGOA3,3,"biological_process",tempdir(),0)
+}
 
 }

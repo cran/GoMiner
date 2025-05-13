@@ -18,8 +18,6 @@ returns a matrix with columns c("SAMPLE","POP","ENRICHMENT")
 compute the gene enrichment in a GO category
 }
 \examples{
-#load("data/x_tableSample3.RData")
-#load("data/x_tablePop3.RData")
 m<-GOenrich3(x_tableSample3,x_tablePop3)
 
 }

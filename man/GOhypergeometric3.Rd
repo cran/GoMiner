@@ -18,8 +18,6 @@ returns a matrix with columns c("x","m","n","k","p")
 compute the hypergeometric p value for gene enrichment in a GO category
 }
 \examples{
-#load("data/x_tableSample3.RData")
-#load("data/x_tablePop3.RData")
 hyper<-GOhypergeometric3(x_tableSample3,x_tablePop3)
 
 }
