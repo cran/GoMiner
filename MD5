@@ -1,6 +1,6 @@
-37beb9bf8e171bf9b3268f9fa9c0535b *DESCRIPTION
+966097d10a576cbb084d7f0b59861ab0 *DESCRIPTION
 252b6aa680ca5256f1c55c58a3dcc9db *NAMESPACE
-ded3a93e70c0d5a5159d2e5462536c71 *R/GoMiner.R
+5d4ff137ec54ed158565e4d640ed456c *R/GoMiner.R
 492b6874941e913961d15b6af9d05fa4 *build/vignette.rds
 2819f6ba11b46c4e0df5e0ccce9c9f47 *data/GOGOA3small.RData
 4b1aed85f9e0f63c380f1b64522c25e2 *data/HCCS66.RData
@@ -15,7 +15,7 @@ a09d891e5cc7ca814c88b1bb6f847f8b *data/x_tablePop31.RData
 017686cf681726591269baad3480bf7e *data/x_tableSample3.RData
 e72b04abfa3381938c945c32ff1f4fae *data/x_thresh.RData
 731e16082ce8b1590dc6976d9c6d573f *inst/doc/GoMiner.Rmd
-0be7a4eff62a9e56bf7b3028297ce324 *inst/doc/GoMiner.html
+00a027b3b077da591bf8bf8b7c9ae7c3 *inst/doc/GoMiner.html
 308d8a8182421fb17175a0dcefb74a04 *man/FDR.Rd
 9ea9eaad728a6ec4aca2facf186e0f7a *man/GOGOA3small.Rd
 86b26a3673e00a6aa92d1ae332e4906d *man/GOenrich3.Rd

@@ -226,7 +226,7 @@ GoMiner<-
     
     #x_hyper1<-hyper
     #save(x_hyper1,file="data/x_hyper1.RData")
-
+    
     fdr<-FDR(sampleList,tablePop3,hyper,GOGOA3,nrand,ontology,dir,opt)
     save(fdr,file=sprintf("%s/%s",subd,"fdr.RData"))
     
@@ -382,7 +382,7 @@ GOenrich3<-
 #' @export
 FDR<-
   function(sampleList,tablePop3,hyper,GOGOA3,nrand,ontology,subd,opt=0) {
-
+    
     
     if(opt<0 | opt >1)
       stop(sprintf("FDR opt must either 0 or 1, not %d",opt))
@@ -402,7 +402,7 @@ FDR<-
       if(is.null(rcpd)) # if no randoms met criteria, then just set FDR to 0
         sampleFDR[cat,"FDR"]<-0
       else
-       sampleFDR[cat,"FDR"]<-rcpd(x)
+        sampleFDR[cat,"FDR"]<-rcpd(x)
     }
     
     l$rcpd<-rcpd
@@ -514,7 +514,7 @@ GOheatmap<-
     
     vprint(-1,verbose,c("TOTAL NUMBER OF ONTOLOGY GENES MAPPING TO A SIGNIFICANT ONTOLOGY CATEGORY: ",length(genes)))
     vprint(-1,verbose,c("NUMBER OF GENES IN INPUT SAMPLE GENELIST: ",length(sampleList)))
-
+    
     genes<-intersect(genes,sampleList)
     
     vprint(-1,verbose,c("NUMBER OF GENES IN INPUT SAMPLE GENELIST MAPPING TO A SIGNIFICANT ONTOLOGY CATEGORY: ",length(genes)))
@@ -577,39 +577,39 @@ GOheatmap<-
 RCPD<-
   function(GOGOA3,tablePop,geneList,nrand,ontology,hyper,subd,opt) {
     
-  if(opt!=0 & opt !=1)
-    stop(sprintf("RCPD opt must be 0 or 1, not %d",opt))
+    if(opt!=0 & opt !=1)
+      stop(sprintf("RCPD opt must be 0 or 1, not %d",opt))
     
-  p<-vector("numeric",0)
-  lh<-length(hyper)  
-  for(i in 1:nrand) {
-    if(opt==0) { # use original database with randomized geneLists
-      sampleList<-randSubsetGeneList(GOGOA3$genes[[ontology]],length(geneList))
-      tableSample<-GOtable3(sampleList,GOGOA3$ontologies[[ontology]])
+    p<-vector("numeric",0)
+    lh<-length(hyper)  
+    for(i in 1:nrand) {
+      if(opt==0) { # use original database with randomized geneLists
+        sampleList<-randSubsetGeneList(GOGOA3$genes[[ontology]],length(geneList))
+        tableSample<-GOtable3(sampleList,GOGOA3$ontologies[[ontology]])
+      }
+      if(opt==1) { # use original geneList with internally scrambled genes database
+        GOGOA3R<-randomGODB(GOGOA3,FALSE)
+        tableSample<-GOtable3(sampleList,GOGOA3R$ontologies[[ontology]])
+      }
+      
+      p0<-GOhypergeometric3(tableSample,tablePop)
+      sink(sprintf("%s/%s",subd,"sink.txt"),append=TRUE)
+      print(c("RCPD",i),quote=FALSE)
+      print(p0[1:10],quote=FALSE)
+      print(c(log10(p0[1]),log10(p0[10])),quote=FALSE)
+      sink()
+      
+      l<-min(lh,length(p0))
+      if(l>2)
+        plot(hyper[1:l],p0[1:l])
+      p<-c(p,p0)
+      
     }
-    if(opt==1) { # use original geneList with internally scrambled genes database
-      GOGOA3R<-randomGODB(GOGOA3,FALSE)
-      tableSample<-GOtable3(sampleList,GOGOA3R$ontologies[[ontology]])
-    }
- 
-    p0<-GOhypergeometric3(tableSample,tablePop)
-    sink(sprintf("%s/%s",subd,"sink.txt"),append=TRUE)
-    print(c("RCPD",i),quote=FALSE)
-    print(p0[1:10],quote=FALSE)
-    print(c(log10(p0[1]),log10(p0[10])),quote=FALSE)
-    sink()
-
-    l<-min(lh,length(p0))
-    if(l>2)
-      plot(hyper[1:l],p0[1:l])
-    p<-c(p,p0)
     
-    }
-    
-  #plot.ecdf(ecdf(log10(p)))
-  if(length(p)>2)
-    return(ecdf(log10(p)))
-  return(NULL)
+    #plot.ecdf(ecdf(log10(p)))
+    if(length(p)>2)
+      return(ecdf(log10(p)))
+    return(NULL)
   }
 
 #' randSubsetGeneList
@@ -676,14 +676,14 @@ randSubsetGeneList<-
 #' @export
 preprocessDB<-
   function(sampleList,GOGOA3,ontology,mn,mx,thresh,verbose) {
-
+    
     l<-list()
     
     vprint(-1,verbose,"GOMINER DATABASE QUICK PEEK:")
     vprint(-1,verbose,GOGOA3$ontologies[[ontology]][1:5,])
     
     if(!is.null(mn) & !is.null(mx))
-      GOGOA3<-hitterBeforeAfterDriver(GOGOA3,mn=2,mx=200,verbose)
+      GOGOA3<-hitterBeforeAfterDriver(GOGOA3,mn,mx,verbose)
     
     sampleList<-intersect(unique(sampleList),GOGOA3$genes[[ontology]])
     
