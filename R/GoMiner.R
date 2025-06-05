@@ -51,6 +51,7 @@
 #' sampleList<-cluster52
 #' title<-"cluster52"
 #' hh<-runGoMinerExamples(title,dir,sampleList,GOGOA3,ontology,nrand=5)
+#' }
 #' 
 #' @return returns a list containing the return value of GoMiner()
 #' 
@@ -685,10 +686,12 @@ preprocessDB<-
     if(!is.null(mn) & !is.null(mx))
       GOGOA3<-hitterBeforeAfterDriver(GOGOA3,mn,mx,verbose)
     
-    sampleList<-intersect(unique(sampleList),GOGOA3$genes[[ontology]])
+    #####sampleList<-intersect(unique(sampleList),GOGOA3$genes[[ontology]])
     
     if(human(GOGOA3))
       sampleList<-validHGNCSymbols(sampleList)$geneList
+    
+    sampleList<-intersect(unique(sampleList),GOGOA3$genes[[ontology]])
     
     checkGeneListVsDB(sampleList,ontology,GOGOA3,thresh=0.5,verbose)
     

@@ -53,3 +53,30 @@ returns a list containing the return value of GoMiner()
 \description{
 driver to run GoMiner under several randomization procedures
 }
+\examples{
+\dontrun{
+# GOGOA3.RData is too large to include in the R package
+# so I need to load it from a file that is not in the package.
+# Since this is in a file in my own file system, I could not
+# include this as a regular example in the package.
+# you can generate it using the package 'minimalistGODB'
+# or you can retrieve it from https://github.com/barryzee/GO/tree/main/databases
+load("/Users/barryzeeberg/personal/GODB_RDATA/goa_human/GOGOA3_goa_human.RData")
+ontology<-"biological_process"
+t<-sort(table(GOGOA3$ontologies[[ontology]][,"HGNC"]),decreasing=TRUE)
+dir<-tempdir()
+
+sampleList<-names(t)[1:50]
+title<-"hi_hitters"
+hh<-runGoMinerExamples(title,dir,sampleList,GOGOA3,ontology,nrand=5)
+
+sampleList<-names(t)[1001:1050]
+title<-"hi_hitters5"
+hh<-runGoMinerExamples(title,dir,sampleList,GOGOA3,ontology,nrand=5)
+
+sampleList<-cluster52
+title<-"cluster52"
+hh<-runGoMinerExamples(title,dir,sampleList,GOGOA3,ontology,nrand=5)
+}
+
+}
